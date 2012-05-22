@@ -9,11 +9,12 @@ describe('About Backbone.Model', function() {
         var todo = new Todo();
         
         var defaultAttrs = {
-            text: 'What is the default value?',
-            done : 'What is the default value?',
-            order: 'What is the default value?'
-        }
+            text:  'FIX ME',
+            done : 'FIX ME',
+            order: 'FIX ME'
+        };
         
+        // NOTE: The attributes property is the internal hash containing the model's state
         expect(defaultAttrs).toEqual(todo.attributes);
     });
     
@@ -25,14 +26,14 @@ describe('About Backbone.Model', function() {
         expect(expectedText).toEqual(todo.get('text'));
     });
     
-    it('If it is exists, an initialize function on the model will be called when it is created.', function() {
-        var todo = new Todo({ text: 'Stop monkeys from throwing their own feces!' });
+    it('If it exists, an initialize function on the model will be called when it is created.', function() {
+        var todo = new Todo({ text: 'Stop monkeys from throwing their own crap!' });
         
         // Why does the expected text differ from what is passed in when we create the Todo?
         // What is happening in Todo.initialize? (see js/todos.js line 22)
-        // You can get this test passing without changing todos.js or the expected text.
+        var sanitizedText = 'FIX ME';
         
-        expect('Stop monkeys from throwing their own double rainbows!').toBe(todo.get('text'));
+        expect(sanitizedText).toBe(todo.get('text'));
     });
     
     it('Fires a custom event when the state changes.', function() {
