@@ -19,7 +19,7 @@ describe('About Backbone.Events', function() {
     });
     
     it('Events allows us to bind and trigger custom named events on an object.', function() {
-        var callback = jasmine.createSpy('-Custom Event Callback-');
+        var callback = jasmine.createSpy('-custom event callback-');
         
         obj.bind('basic_event', callback);
         
@@ -29,19 +29,19 @@ describe('About Backbone.Events', function() {
     });
     
     it('Events allows us to trigger more than one event at the same time.', function() {
-        var callback = jasmine.createSpy('-Custom Event Callback-');
+        var callback = jasmine.createSpy('-custom event callback-');
         
         // You can bind an object to two events at the same time separating them with spaces
         obj.bind('an_event another_event', callback);
         
         // How would you change the trigger call to trigger two events at the same time?
-        obj.trigger('an_event')
+        obj.trigger('an_event');
         
         expect(callback.callCount).toBe(2);
     });
     
     it('Triggered events pass along any arguments to the callback.', function() {
-        var callback = jasmine.createSpy('-Custom Event Callback-');
+        var callback = jasmine.createSpy('-custom event callback-');
         
         obj.bind('some_event', callback);
         
@@ -76,42 +76,43 @@ describe('About Backbone.Events', function() {
     });
     
     it("Evented objects can bind 'all' as a special event name to capture all triggered events on the object.", function() {
-        var callback = jasmine.createSpy('-Custom Event Callback-');
+        var callback = jasmine.createSpy('-custom event callback-');
         
         obj.bind('all', callback);
         
         // How are you going to call obj.trigger to get both expectations passing?
+        // LEARN MORE: https://github.com/pivotal/jasmine/wiki/Spies
         
         expect(callback.callCount).toBe(1);
         expect(callback.mostRecentCall.args[0]).toBe('custom_event');
     });
     
     it('Evented objects can also have their named events removed.', function() {
-        var spy1 = jasmine.createSpy('-Spy 1-');
-        var spy2 = jasmine.createSpy('-Spy 2-');
-        var spy3 = jasmine.createSpy('-Spy 3-');
+        var spy1 = jasmine.createSpy('-spy 1-');
+        var spy2 = jasmine.createSpy('-spy 2-');
+        var spy3 = jasmine.createSpy('-spy 3-');
          
-        obj.bind('foo', spy1);
-        obj.bind('foo', spy2);
-        obj.bind('foo', spy3);
-        obj.bind('bar', spy1);
+        obj.bind('foo_event', spy1);
+        obj.bind('foo_event', spy2);
+        obj.bind('foo_event', spy3);
+        obj.bind('bar_event', spy1);
         
         // How do you unbind just a single callback for the event?
         
-        obj.trigger('foo');
+        obj.trigger('foo_event');
         
         expect(spy1).not.toHaveBeenCalled();
         
         // How do you unbind all callbacks tied to the event with a single method?
         
-        obj.trigger('foo');
+        obj.trigger('foo_event');
         
         expect(spy2.callCount).toEqual(1);
         expect(spy3.callCount).toEqual(1);
         
         // How do you unbind all callbacks and events tied to the object with a single method?
         
-        obj.trigger('bar');
+        obj.trigger('bar_event');
         
         expect(spy1).not.toHaveBeenCalled();
     });
