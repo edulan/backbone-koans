@@ -9,11 +9,11 @@ describe('About Backbone.Router', function() {
         // route callback methods are just regular javascript functions.
         // we use spies for the following callback methods to make testing easier.
         
-        help: jasmine.createSpy('help router action'),
+        help: jasmine.createSpy('help-router-action'),
         
-        search: jasmine.createSpy('search router action'),
+        search: jasmine.createSpy('search-router-action'),
         
-        articles: jasmine.createSpy('articles router action')
+        articles: jasmine.createSpy('articles-router-action')
     });
     
     var router = new MyRouter();
