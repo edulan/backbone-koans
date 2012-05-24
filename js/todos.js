@@ -79,11 +79,10 @@
         },
 
         render: function() {
-            var self = this;
+            var template = _.template($('#item-template').html());
             
-            $(self.el).empty().template(TEMPLATE_URL + '/templates/item.html', self.model.toJSON(), function() {
-                self.setText();
-            });
+            this.$el.html(template(this.model.toJSON()));
+            this.setText();
             
             return this;
         },
@@ -134,33 +133,29 @@
         },
 
         initialize: function(options) {
-            var self = this,
-                parentElt = options.appendTo || $('body');
-                
-            TEMPLATE_URL = options.templateUrl || TEMPLATE_URL;
-            
-            parentElt.template(TEMPLATE_URL + '/templates/app.html', {}, function() {
-                self.setElement($('#todoapp'));
-                
-                self.input = self.$("#new-todo");
+            var template = _.template($('#app-template').html());
+            var parentElt = options.appendTo || $('body');
 
-                self.todos.bind('add',   self.addOne, self);
-                self.todos.bind('reset', self.addAll, self);
-                self.todos.bind('all',   self.render, self);
+            parentElt.append(template({}));
 
-                self.todos.fetch();
-            });
+            this.setElement($('#todoapp'));
+            this.input = this.$("#new-todo");
+
+            this.todos.bind('add',   this.addOne, this);
+            this.todos.bind('reset', this.addAll, this);
+            this.todos.bind('all',   this.render, this);
+
+            this.todos.fetch();
         },
 
         render: function() {
-            var self = this,
-                data = {
-                    total:      self.todos.length,
-                    done:       self.todos.done().length,
-                    remaining:  self.todos.remaining().length
-                };
+            var template = _.template($('#stats-template').html());
             
-            $('#todo-stats').empty().template(TEMPLATE_URL + '/templates/stats.html', data);
+            $('#todo-stats').html(template({
+                total:      this.todos.length,
+                done:       this.todos.done().length,
+                remaining:  this.todos.remaining().length
+            }));
             
             return this;
         },
