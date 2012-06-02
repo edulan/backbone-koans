@@ -9,9 +9,9 @@ describe('About Backbone.Model', function() {
         var todo = new Todo();
         
         var defaultAttrs = {
-            text:  'FIX ME',
-            done : 'FIX ME',
-            order: 'FIX ME'
+            text:  '',
+            done : false,
+            order: 0
         };
         
         // NOTE: The attributes property is the internal hash containing the model's state
@@ -21,7 +21,7 @@ describe('About Backbone.Model', function() {
     it('Attributes can be set on the model instance when it is created.', function() {
         var todo = new Todo({ text: 'Get oil change for car.' });
         
-        var expectedText = 'FIX ME';
+        var expectedText = 'Get oil change for car.';
         
         expect(expectedText).toEqual(todo.get('text'));
     });
@@ -31,12 +31,12 @@ describe('About Backbone.Model', function() {
         
         // Why does the expected text differ from what is passed in when we create the Todo?
         // What is happening in Todo.initialize? (see js/todos.js line 22)
-        var sanitizedText = 'FIX ME';
+        var sanitizedText = 'Stop monkeys from throwing their own double rainbows!';
         
         expect(sanitizedText).toBe(todo.get('text'));
     });
     
-    it('Fires a custom event when the state changes.', function() {
+    it('Fires a change event when the state changes.', function() {
         var callback = jasmine.createSpy('-change event callback-');
         
         var todo = new Todo();
@@ -45,6 +45,7 @@ describe('About Backbone.Model', function() {
         
         // How would you update a property on the todo here?
         // Hint: http://documentcloud.github.com/backbone/#Model-set
+        todo.set({ text: 'Learn Backbone.js' });
         
         expect(callback).toHaveBeenCalled();
     });
@@ -58,6 +59,7 @@ describe('About Backbone.Model', function() {
         
         // What would you need to set on the todo properties to cause validation to fail?
         // Refer to Todo.validate in js/todos.js to see the logic.
+        todo.set({ done: 'false' });
         
         var errorArgs = errorCallback.mostRecentCall.args;
         

@@ -9,6 +9,10 @@ describe('About Backbone.Collection', function() {
         expect(todos.length).toEqual(1);
         
         // How would you add multiple models to the collection with a single method call?
+        todos.add([
+            { text: 'Pick the milk' },
+            { text: 'Tidy up' }
+        ]);
         
         expect(todos.length).toEqual(3);
     });
@@ -22,6 +26,9 @@ describe('About Backbone.Collection', function() {
         // How is the collection sorting the models when they are added? (see TodoList.comparator in js/todos.js)
         //
         // Hint: Could you change attribute values on the todos themselves?
+        todos.comparator = function(todoA, todoB) {
+            return todoB.get('order') - todoA.get('order');
+        };
         
         todos.add([{ text: 'Do the laundry',  order: 4},
                    { text: 'Clean the house', order: 8},
@@ -37,11 +44,13 @@ describe('About Backbone.Collection', function() {
     
     it('Fires custom named events when the contents of the collection change.', function() {
         var todos = new TodoList();
+        var todo = new Todo();
         
         var addModelCallback = jasmine.createSpy('-add model callback-');
         todos.bind('add', addModelCallback);
         
         // How would you get both expectations to pass with a single method call?
+        todos.add(todo);
         
         expect(todos.length).toEqual(1);
         expect(addModelCallback).toHaveBeenCalled();
@@ -50,6 +59,7 @@ describe('About Backbone.Collection', function() {
         todos.bind('remove', removeModelCallback);
         
         // How would you get both expectations to pass with a single method call?
+        todos.remove(todo);
         
         expect(todos.length).toEqual(0);
         expect(removeModelCallback).toHaveBeenCalled();

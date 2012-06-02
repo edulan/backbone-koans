@@ -12,6 +12,7 @@ describe('About Backbone.Events', function() {
         
         // How would you get these Backbone.Events functions added to basicObject?
         // Hint: http://documentcloud.github.com/backbone/#Events
+        _.extend(basicObject, Backbone.Events);
         
         expect(typeof basicObject.bind).toEqual('function');
         expect(typeof basicObject.unbind).toEqual('function');
@@ -24,6 +25,7 @@ describe('About Backbone.Events', function() {
         obj.bind('basic_event', callback);
         
         // How would you cause the callback for this custom event to be called?
+        obj.trigger('basic_event');
         
         expect(callback).toHaveBeenCalled();
     });
@@ -35,7 +37,7 @@ describe('About Backbone.Events', function() {
         obj.bind('an_event another_event', callback);
         
         // How would you change the trigger call to trigger two events at the same time?
-        obj.trigger('an_event');
+        obj.trigger('an_event another_event');
         
         expect(callback.callCount).toBe(2);
     });
@@ -45,7 +47,7 @@ describe('About Backbone.Events', function() {
         
         obj.bind('some_event', callback);
         
-        obj.trigger('some_event');
+        obj.trigger('some_event', 'arg1', 'arg2');
         
         expect(callback.mostRecentCall.args).toEqual(['arg1', 'arg2']);
     });
@@ -68,7 +70,7 @@ describe('About Backbone.Events', function() {
         
         // How would you get 'this.color' to refer to 'foo' in the changeColor function?
         
-        obj.bind('an_event', changeColor);
+        obj.bind('an_event', changeColor, foo);
         
         obj.trigger('an_event');
         
@@ -82,6 +84,7 @@ describe('About Backbone.Events', function() {
         
         // How are you going to call obj.trigger to get both expectations passing?
         // LEARN MORE: https://github.com/pivotal/jasmine/wiki/Spies
+        obj.trigger('custom_event');
         
         expect(callback.callCount).toBe(1);
         expect(callback.mostRecentCall.args[0]).toBe('custom_event');
@@ -98,12 +101,14 @@ describe('About Backbone.Events', function() {
         obj.bind('bar_event', spy1);
         
         // How do you unbind just a single callback for the event?
+        obj.unbind('foo_event', spy1);
         
         obj.trigger('foo_event');
         
         expect(spy1).not.toHaveBeenCalled();
         
         // How do you unbind all callbacks tied to the event with a single method?
+        obj.unbind('foo_event');
         
         obj.trigger('foo_event');
         
@@ -111,6 +116,7 @@ describe('About Backbone.Events', function() {
         expect(spy3.callCount).toEqual(1);
         
         // How do you unbind all callbacks and events tied to the object with a single method?
+        obj.unbind();
         
         obj.trigger('bar_event');
         
